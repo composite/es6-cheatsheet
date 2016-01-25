@@ -160,8 +160,6 @@ Person.prototype.prefixName = function (arr) {
 };
 ```
 
-Using **Arrow Functions**, the lexical value of `this` isn't shadowed and we
-can re-write the above as shown:
 **화살표 함수(Arrow Functions)** 를 사용하면, 컨텍스트 참조가 담긴 `this`가
 컨텍스트 위치를 바꾸지 않고도 아래와 같이 바로 재작성 가능합니다.
 
@@ -188,8 +186,7 @@ const arr = [1, 2, 3, 4, 5];
 const squares = arr.map(x => x * x); // 화살표 구문을 통한 단순화된 구현
 ```
 
-> **Best Practice**: Use **Arrow Functions** in place of function expressions
-when possible.
+> **실습**: **화살표 함수** 를 기존에서 간편하게 구현 가능한 함수 구문을 대체해 보세요.
 
 <sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
@@ -232,7 +229,7 @@ ES6에서 더 간편하게 문자열을 반복하는 방법을 접근할 수 있
 
 ```javascript
 // String.repeat(numberOfRepetitions)
-'meow'.repeat(3); // 'meowmeowmeow'
+'야옹'.repeat(3); // '아옹야옹야옹'
 ```
 
 ### Template Literals
@@ -240,11 +237,11 @@ ES6에서 더 간편하게 문자열을 반복하는 방법을 접근할 수 있
 **템플릿 리터럴(Template Literals)** 을 통하여, 문자열 안에 있는 특수문자를 굳이 이스케이프하지 않아도 작성할 수 있게 됐습니다.
 
 ```javascript
-var text = "This string contains \"double quotes\" which are escaped.";
+var text = "이 문자열에는 \"쌍따옴표\"를 이스케이프하여 넣었습니다.";
 ```
 
 ```javascript
-let text = `This string contains "double quotes" which are escaped.`;
+let text = `이 문자열에는 "쌍따옴표"를 이스케이프하여 넣었습니다.`;
 ```
 
 **템플릿 리터럴** 에서는 또한 보간 기능을 지원하여, 문자열 안에 변수를 직접 삽입하여 치환할 수 있습니다.
@@ -253,7 +250,7 @@ let text = `This string contains "double quotes" which are escaped.`;
 var name = 'Tiger';
 var age = 13;
 
-console.log('My cat is named ' + name + ' and is ' + age + ' years old.');
+console.log('내가 키우는 고양이 이름은 ' + name + ' 이고 ' + age + ' 살 입니다.');
 ```
 
 간단하게 하면,
@@ -262,7 +259,7 @@ console.log('My cat is named ' + name + ' and is ' + age + ' years old.');
 const name = 'Tiger';
 const age = 13;
 
-console.log(`My cat is named ${name} and is ${age} years old.`);
+console.log(`내가 키우는 고양이 이름은 ${name} 이고 ${age} 살 입니다.`);
 ```
 
 ES5 에서는 행간을 표현할 때 이렇게 합니다.
@@ -295,11 +292,11 @@ nickelodeon`
 );
 ```
 
-**Template Literals** can accept expressions, as well:
+**템플릿 리터럴** 에서는 구문 작성도 지원합니다. 이렇게요.
 
 ```javascript
 let today = new Date();
-let text = `The time and date is ${today.toLocaleString()}`;
+let text = `지금 시각은 ${today.toLocaleString()} 입니다.`;
 ```
 
 <sup>[(차례로 돌아가기)](#table-of-contents)</sup>
