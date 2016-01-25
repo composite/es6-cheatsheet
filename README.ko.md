@@ -9,7 +9,7 @@
 - [IIFEs 를 Blocks 으로 데체](#replacing-iifes-with-blocks)
 - [화살표 함수](#arrow-functions)
 - [문자열](#strings)
-- [소멸자](#destructuring)
+- [변수 분해](#destructuring)
 - [모듈](#modules)
 - [인자](#parameters)
 - [클래스](#classes)
@@ -71,38 +71,39 @@ let x = 'hi'; // ReferenceError: x 는(은) 정의되지 않았습니다.
 새로운 작업 환경에서 작업할 때, `let` 지시문을 통해 언제나 변경 가능한 변수를 선언하고,
 `const` 지시문을 통해 다시 정의할 수 없는 변수를 선언할 수 있습니다.
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Replacing IIFEs with Blocks
 
-> A common use of **Immediately Invoked Function Expressions** is to enclose
-values within its scope. In ES6, we now have the ability to create block-based
-scopes and therefore are not limited purely to function-based scope.
+> 보통 **즉시 실행 함수 구문(Immediately Invoked Function Expressions)** 은
+스코프 내에서 값을 정의하기 위해 쓰입니다.
+ES6에서는 이제 굳이 함수 기반의 구문을 쓰지 않아도 블록 기반의 구문을 통해
+스코프를 분리할 수 있게 됐습니다.
 
 ```javascript
 (function () {
     var food = 'Meow Mix';
 }());
 
-console.log(food); // Reference Error
+console.log(food); // 참조 오류
 ```
 
-Using ES6 Blocks:
+ES6 블록 구문 사용:
 
 ```javascript
 {
     let food = 'Meow Mix';
 }
 
-console.log(food); // Reference Error
+console.log(food); // 참조 오류
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Arrow Functions
 
-Often times we have nested functions in which we would like to preserve the
-context of `this` from its lexical scope. An example is shown below:
+가끔 함수 안에 함수에서 `this` 지시문에 대한 컨텍스트 참조를 유지하고 싶어합니다.
+예를 들면,
 
 ```javascript
 function Person(name) {
@@ -111,13 +112,12 @@ function Person(name) {
 
 Person.prototype.prefixName = function (arr) {
     return arr.map(function (character) {
-        return this.name + character; // Cannot read property 'name' of undefined
+        return this.name + character; // 정의되지 않은 'name' 속성을 가져올 수 없습니다.
     });
 };
 ```
 
-One common solution to this problem is to store the context of `this` using
-a variable:
+한가지 보통 사용하는 해결 방법은 `this` 컨텍스트를 변수로 담아 참조하는 것이죠.
 
 ```javascript
 function Person(name) {
@@ -125,14 +125,14 @@ function Person(name) {
 }
 
 Person.prototype.prefixName = function (arr) {
-    var that = this; // Store the context of this
+    var that = this; // this가 가리키는 참조를 저장
     return arr.map(function (character) {
         return that.name + character;
     });
 };
 ```
 
-We can also pass in the proper context of `this`:
+이제 이런 식으로도 `this`를 참조할 수 있습니다.:
 
 ```javascript
 function Person(name) {
@@ -146,7 +146,7 @@ Person.prototype.prefixName = function (arr) {
 };
 ```
 
-As well as bind the context:
+아니면 컨텍스트 바인딩 메소드를 제공하기도 하죠.
 
 ```javascript
 function Person(name) {
@@ -162,6 +162,8 @@ Person.prototype.prefixName = function (arr) {
 
 Using **Arrow Functions**, the lexical value of `this` isn't shadowed and we
 can re-write the above as shown:
+**화살표 함수(Arrow Functions)** 를 사용하면, 컨텍스트 참조가 담긴 `this`가
+컨텍스트 위치를 바꾸지 않고도 아래와 같이 바로 재작성 가능합니다.
 
 ```javascript
 function Person(name) {
@@ -173,31 +175,28 @@ Person.prototype.prefixName = function (arr) {
 };
 ```
 
-> **Best Practice**: Use **Arrow Functions** whenever you need to preserve the
-lexical value of `this`.
+> **실습**: **화살표 함수** 를 `this` 컨텍스트 참조를 유지하고 싶은 함수 구문에 사용해 보세요.
 
-Arrow Functions are also more concise when used in function expressions which
-simply return a value:
+물론 화살표 함수는 좀 더 복잡한 수행을 위해 함수 구문처럼 사용할 수 있습니다.
 
 ```javascript
-var squares = arr.map(function (x) { return x * x }); // Function Expression
+var squares = arr.map(function (x) { return x * x }); // 함수 구문
 ```
 
 ```javascript
 const arr = [1, 2, 3, 4, 5];
-const squares = arr.map(x => x * x); // Arrow Function for terser implementation
+const squares = arr.map(x => x * x); // 화살표 구문을 통한 단순화된 구현
 ```
 
 > **Best Practice**: Use **Arrow Functions** in place of function expressions
 when possible.
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Strings
 
-With ES6, the standard library has grown immensely. Along with these changes
-are new methods which can be used on strings, such as `.includes()` and
-`.repeat()`.
+ES6에서는 표준 라이브러리 기능이 향상됐습니다. 문자열을 좀 더 효율적으로 사용할 수 있는
+몇가지 메소드가 추가됐습니다. 예를 들면, `.includes()` 메소드와 `.repeat()` 등이 있습니다.
 
 ### .includes( )
 
@@ -207,9 +206,8 @@ var substring = 'foo';
 
 console.log(string.indexOf(substring) > -1);
 ```
-
-Instead of checking for a return value `> -1` to denote string containment,
-we can simply use `.includes()` which will return a boolean:
+`> -1` 결과를 반환하여 문자열이 들어있는 지 확인하는 부분을
+`.includes()` 메소드를 통해 부울 값으로 간편하게 확인할 수 있습니다.
 
 ```javascript
 const string = 'food';
@@ -230,7 +228,7 @@ function repeat(string, count) {
 }
 ```
 
-In ES6, we now have access to a terser implementation:
+ES6에서 더 간편하게 문자열을 반복하는 방법을 접근할 수 있도록 구현했습니다.
 
 ```javascript
 // String.repeat(numberOfRepetitions)
@@ -239,8 +237,7 @@ In ES6, we now have access to a terser implementation:
 
 ### Template Literals
 
-Using **Template Literals**, we can now construct strings that have special
-characters in them without needing to escape them explicitly.
+**템플릿 리터럴(Template Literals)** 을 통하여, 문자열 안에 있는 특수문자를 굳이 이스케이프하지 않아도 작성할 수 있게 됐습니다.
 
 ```javascript
 var text = "This string contains \"double quotes\" which are escaped.";
@@ -250,8 +247,7 @@ var text = "This string contains \"double quotes\" which are escaped.";
 let text = `This string contains "double quotes" which are escaped.`;
 ```
 
-**Template Literals** also support interpolation, which makes the task of
-concatenating strings and values:
+**템플릿 리터럴** 에서는 또한 보간 기능을 지원하여, 문자열 안에 변수를 직접 삽입하여 치환할 수 있습니다.
 
 ```javascript
 var name = 'Tiger';
@@ -260,7 +256,7 @@ var age = 13;
 console.log('My cat is named ' + name + ' and is ' + age + ' years old.');
 ```
 
-Much simpler:
+간단하게 하면,
 
 ```javascript
 const name = 'Tiger';
@@ -269,7 +265,7 @@ const age = 13;
 console.log(`My cat is named ${name} and is ${age} years old.`);
 ```
 
-In ES5, we handled new lines as follows:
+ES5 에서는 행간을 표현할 때 이렇게 합니다.
 
 ```javascript
 var text = (
@@ -279,7 +275,7 @@ var text = (
 );
 ```
 
-Or:
+또는,
 
 ```javascript
 var text = [
@@ -289,8 +285,8 @@ var text = [
 ].join('\n');
 ```
 
-**Template Literals** will preserve new lines for us without having to
-explicitly place them in:
+**템플릿 리터럴** 에서는 행간을 유지할 수 있어, 굳이 명시적으로 구분자를 주지 않아도
+간편하게 아래와 같이 표현할 수 있습니다.
 
 ```javascript
 let text = ( `cat
@@ -306,14 +302,16 @@ let today = new Date();
 let text = `The time and date is ${today.toLocaleString()}`;
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Destructuring
 
-Destructuring allows us to extract values from arrays and objects (even deeply
-nested) and store them in variables with a more convenient syntax.
+**변수 분해(Destructuring)** 기능을 통하여 변수나 객체(때론 더 깊게)에 있는 각 값들을
+각 변수로 저장하는 간단한 구문을 제공합니다.
 
 ### Destructuring Arrays
+
+배열을 변수로 분해
 
 ```javascript
 var arr = [1, 2, 3, 4];
@@ -332,6 +330,8 @@ console.log(b); // 2
 
 ### Destructuring Objects
 
+객체를 변수로 분해
+
 ```javascript
 var luke = { occupation: 'jedi', father: 'anakin' };
 var occupation = luke.occupation; // 'jedi'
@@ -346,7 +346,7 @@ console.log(occupation); // 'jedi'
 console.log(father); // 'anakin'
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Modules
 
@@ -477,7 +477,7 @@ Therefore, changing the binding of a variable in one module will affect the
 value within the exported module. Avoid changing the public interface of these
 exported values.
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Parameters
 
@@ -574,7 +574,7 @@ parameters to a function:
 Math.max(...[-1, 100, 9001, -32]); // 9001
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Classes
 
@@ -648,7 +648,7 @@ class Personal extends Person {
 implementation and prototypes work under the hood, it is a good feature for
 beginners and allows us to write cleaner code.
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Symbols
 
@@ -669,7 +669,7 @@ object[keyTwo] = 'Much Uniqueness';
 >> false
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Maps
 
@@ -730,7 +730,7 @@ for (let [key, value] of map.entries()) {
 }
 ```
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## WeakMaps
 
@@ -810,7 +810,7 @@ was associated with a particular DOM element once it has been removed from the
 document. In general, WeakMaps are very useful for any library that wraps DOM
 elements.
 
-<sup>[(back to table of contents)](#table-of-contents)</sup>
+<sup>[(차례로 돌아가기)](#table-of-contents)</sup>
 
 ## Promises
 
